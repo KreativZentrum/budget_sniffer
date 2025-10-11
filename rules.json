@@ -1,0 +1,473 @@
+{
+  "version": "1.0.5",
+  "default_category": "Uncategorised",
+  "rules": [
+    {
+      "name": "Groceries - PaknSave",
+      "match": {
+        "contains_any": [
+          "pak n save",
+          "paknsave",
+          "pns"
+        ]
+      },
+      "category": "Groceries"
+    },
+    {
+      "name": "Utilities - Power",
+      "match": {
+        "regex_any": [
+          "\\bmeridian\\b",
+          "\\bcontact energy\\b",
+          "\\bgenesis energy\\b"
+        ]
+      },
+      "category": "Utilities"
+    },
+    {
+      "name": "Transport - Fuel",
+      "match": {
+        "contains_any": [
+          "bp ",
+          "z energy",
+          "caltex",
+          "waitomo"
+        ]
+      },
+      "category": "Transport"
+    },
+    {
+      "name": "Dining/Takeaway",
+      "match": {
+        "contains_any": [
+          "mcdonald",
+          "burger",
+          "pizza",
+          "cafe",
+          "coffee",
+          "restaurant"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "Income",
+      "match": {
+        "regex_any": [
+          "\\bsalary\\b",
+          "\\bwages\\b",
+          "\\bpayroll\\b"
+        ]
+      },
+      "category": "Income"
+    },
+    {
+      "name": "Housing",
+      "match": {
+        "contains_any": [
+          "rent",
+          "property mgr",
+          "mortgage",
+          "home loan"
+        ]
+      },
+      "category": "Housing"
+    },
+    {
+      "name": "Entertainment",
+      "match": {
+        "contains_any": [
+          "netflix",
+          "spotify",
+          "disney",
+          "steam"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "Transfers",
+      "match": {
+        "contains_any": [
+          "transfer",
+          "internal transfer",
+          "payment to credit card",
+          "visa payment",
+          "move to",
+          "from savings",
+          "to savings"
+        ]
+      },
+      "category": "Transfer"
+    },
+    {
+      "name": "User: joint -> Housing",
+      "match": {
+        "contains_any": [
+          "joint"
+        ]
+      },
+      "category": "Housing"
+    },
+    {
+      "name": "User: overdraft -> Fees",
+      "match": {
+        "contains_any": [
+          "overdraft"
+        ]
+      },
+      "category": "Fees"
+    },
+    {
+      "name": "User: nan -> Fees",
+      "match": {
+        "contains_any": [
+          "nan"
+        ]
+      },
+      "category": "Fees"
+    },
+    {
+      "name": "User: 9554-****-****-1892 -> Transfer",
+      "match": {
+        "contains_any": [
+          "9554-****-****-1892"
+        ]
+      },
+      "category": "Transfer"
+    },
+    {
+      "name": "User: sharesies -> Savings",
+      "match": {
+        "contains_any": [
+          "sharesies"
+        ]
+      },
+      "category": "Savings"
+    },
+    {
+      "name": "User: tracy -> Travel",
+      "match": {
+        "contains_any": [
+          "tracy"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: 01-0438-0056412-00 -> Transfer",
+      "match": {
+        "contains_any": [
+          "01-0438-0056412-00"
+        ]
+      },
+      "category": "Transfer"
+    },
+    {
+      "name": "User: 06-0821-0506324-00 -> Gifts",
+      "match": {
+        "contains_any": [
+          "06-0821-0506324-00"
+        ]
+      },
+      "category": "Gifts"
+    },
+    {
+      "name": "User: gipsy -> Dining",
+      "match": {
+        "contains_any": [
+          "gipsy"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: resolution -> Insurance",
+      "match": {
+        "contains_any": [
+          "resolution"
+        ]
+      },
+      "category": "Insurance"
+    },
+    {
+      "name": "User: scooterazzi -> Transport",
+      "match": {
+        "contains_any": [
+          "scooterazzi"
+        ]
+      },
+      "category": "Transport"
+    },
+    {
+      "name": "User: 01-0438-0056412-02 -> Transfer",
+      "match": {
+        "contains_any": [
+          "01-0438-0056412-02"
+        ]
+      },
+      "category": "Transfer"
+    },
+    {
+      "name": "User: angus -> Gifts",
+      "match": {
+        "contains_any": [
+          "angus"
+        ]
+      },
+      "category": "Gifts"
+    },
+    {
+      "name": "User: spark -> Utilities",
+      "match": {
+        "contains_any": [
+          "spark"
+        ]
+      },
+      "category": "Utilities"
+    },
+    {
+      "name": "User: corianders -> Dining",
+      "match": {
+        "contains_any": [
+          "corianders"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: olivia -> Entertainment",
+      "match": {
+        "contains_any": [
+          "olivia"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: ashee -> Entertainment",
+      "match": {
+        "contains_any": [
+          "ashee"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: southern -> Healthcare",
+      "match": {
+        "contains_any": [
+          "southern"
+        ]
+      },
+      "category": "Healthcare"
+    },
+    {
+      "name": "User: mary -> Gifts",
+      "match": {
+        "contains_any": [
+          "mary"
+        ]
+      },
+      "category": "Gifts"
+    },
+    {
+      "name": "User: positive -> Healthcare",
+      "match": {
+        "contains_any": [
+          "positive"
+        ]
+      },
+      "category": "Healthcare"
+    },
+    {
+      "name": "User: vicki -> Entertainment",
+      "match": {
+        "contains_any": [
+          "vicki"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: jemima -> Gifts",
+      "match": {
+        "contains_any": [
+          "jemima"
+        ]
+      },
+      "category": "Gifts"
+    },
+    {
+      "name": "User: pete -> Entertainment",
+      "match": {
+        "contains_any": [
+          "pete"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: olde -> Entertainment",
+      "match": {
+        "contains_any": [
+          "olde"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: pacific -> Healthcare",
+      "match": {
+        "contains_any": [
+          "pacific"
+        ]
+      },
+      "category": "Healthcare"
+    },
+    {
+      "name": "User: kahukura -> Gifts",
+      "match": {
+        "contains_any": [
+          "kahukura"
+        ]
+      },
+      "category": "Gifts"
+    },
+    {
+      "name": "User: gazley -> Travel",
+      "match": {
+        "contains_any": [
+          "gazley"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: moore -> Dining",
+      "match": {
+        "contains_any": [
+          "moore"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: dxc -> Entertainment",
+      "match": {
+        "contains_any": [
+          "dxc"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: police -> Travel",
+      "match": {
+        "contains_any": [
+          "police"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: cloche -> Dining",
+      "match": {
+        "contains_any": [
+          "cloche"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: justin -> Healthcare",
+      "match": {
+        "contains_any": [
+          "justin"
+        ]
+      },
+      "category": "Healthcare"
+    },
+    {
+      "name": "User: fcnz -> Travel",
+      "match": {
+        "contains_any": [
+          "fcnz"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: 06-0821-0620733-00 -> Gifts",
+      "match": {
+        "contains_any": [
+          "06-0821-0620733-00"
+        ]
+      },
+      "category": "Gifts"
+    },
+    {
+      "name": "User: 06-0821-0620776-01 -> Gifts",
+      "match": {
+        "contains_any": [
+          "06-0821-0620776-01"
+        ]
+      },
+      "category": "Gifts"
+    },
+    {
+      "name": "User: taste -> Dining",
+      "match": {
+        "contains_any": [
+          "taste"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: prosegur -> Travel",
+      "match": {
+        "contains_any": [
+          "prosegur"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: prosegur -> Gifts",
+      "match": {
+        "contains_any": [
+          "prosegur"
+        ]
+      },
+      "category": "Gifts"
+    },
+    {
+      "name": "User: pos -> Dining",
+      "match": {
+        "contains_any": [
+          "pos"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: dxc -> Income",
+      "match": {
+        "contains_any": [
+          "dxc"
+        ]
+      },
+      "category": "Income"
+    },
+    {
+      "name": "User: joint -> Groceries",
+      "match": {
+        "contains_any": [
+          "joint"
+        ]
+      },
+      "category": "Groceries"
+    }
+  ]
+}

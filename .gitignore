@@ -1,0 +1,14 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+.env
+
+# SQLite & journals
+*.db
+*.db-shm
+*.db-wal
+
+# Logs & local data
+logs/
+data/
