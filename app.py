@@ -642,3 +642,46 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5056"))
     host = os.environ.get("HOST", "127.0.0.1")
     app.run(host=host, port=port, debug=True)
+
+
+# --- Budget Sniffer Rules API (reads from Rules.json) ---
+import os, json
+from flask import jsonify
+
+def _load_rules_from_json():
+    rules_path = os.environ.get("RULES_JSON_PATH")
+    if not rules_path:
+        rules_path = os.path.join(os.path.dirname(__file__), "Rules.json")
+        if not os.path.exists(rules_path):
+            alt = os.path.join(os.path.dirname(__file__), "static", "data", "Rules.json")
+            if os.path.exists(alt):
+                rules_path = alt
+    try:
+        with open(rules_path, "r", encoding="utf-8") as rf:
+            data = json.load(rf)
+    except Exception:
+        return []
+    if isinstance(data, dict) and "rules" in data and isinstance(data["rules"], list):
+        return data["rules"]
+    if isinstance(data, list):
+        return data
+    return []
+
+def register_rules_routes(app):
+    @app.get("/api/rules")
+    def api_rules():
+        rules = _load_rules_from_json()
+        out = []
+        for r in rules:
+            if not isinstance(r, dict):
+                continue
+            rr = dict(r)
+            if "enabled" in rr:
+                val = rr["enabled"]
+                try:
+                    rr["enabled"] = 1 if int(val) != 0 else 0
+                except Exception:
+                    rr["enabled"] = 1 if str(val).lower() in ("true","yes","y","on") else 0
+            out.append(rr)
+        return jsonify({"rules": out})
+# --- end Rules API ---

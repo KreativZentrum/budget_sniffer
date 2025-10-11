@@ -7,8 +7,22 @@
   <meta name="description" content="Upload bank exports, auto-categorise with rules, and see spend insights for the last 12 months.">
   <link rel="stylesheet" href="/static/css/styles.css?v={{ app_version }}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>/* Budget Sniffer RH Rules sidebar (scoped, non-invasive) */
+    .bsr-layout{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}
+    .bsr-main{min-width:0}
+    .bsr-sidebar{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;border-left:1px solid rgba(255,255,255,0.1);padding-left:12px}
+    .bsr-card{border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px;margin-bottom:12px;background:rgba(0,0,0,0.15);backdrop-filter:blur(2px)}
+    .bsr-card h3{margin:0 0 8px 0;font-size:1rem}
+    .bsr-rule{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;padding:8px;border-radius:8px;border:1px dashed rgba(255,255,255,0.12);margin-bottom:8px}
+    .bsr-badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);font-size:11px}
+    .bsr-muted{opacity:.7}
+    .bsr-on{border-color:rgba(0,200,0,0.35)}
+    .bsr-off{border-color:rgba(200,0,0,0.35);opacity:.6}</style>
 </head>
-<body>
+<body>    <div class="bsr-layout">
+      <main class="bsr-main" id="app-main">
+    
+
   <header>
     <h1>Budget Sniffer <span class="version">{{ app_version }}</span></h1>
     <p class="subtitle">Dark Mode • Upload files → auto-categorise → insights (default last 12 months)</p>
@@ -84,5 +98,20 @@
   </footer>
 
   <script src="/static/js/app.js?v={{ app_version }}" defer></script>
+      </main>
+      <aside class="bsr-sidebar" id="rules-sidebar" aria-label="Rules">
+        <div class="bsr-card">
+          <h3>Rules Engine</h3>
+          <div class="bsr-muted" id="rules-summary">Loading…</div>
+        </div>
+        <div class="bsr-card">
+          <h3>Current Rules</h3>
+          <div id="rules-list" aria-live="polite"></div>
+        </div>
+      </aside>
+    </div>
+    
+
+  <script src="{{ url_for('static', filename='js/rules_panel.js') }}"></script>
 </body>
 </html>

@@ -104,7 +104,7 @@
       "name": "User: joint -> Housing",
       "match": {
         "contains_any": [
-          "joint"
+          "Mortacct"
         ]
       },
       "category": "Housing"
@@ -464,7 +464,7 @@
       "name": "User: joint -> Groceries",
       "match": {
         "contains_any": [
-          "joint"
+          "Joint Account Ira St"
         ]
       },
       "category": "Groceries"
