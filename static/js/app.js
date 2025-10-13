@@ -102,6 +102,37 @@ function catOptionsHtml(selected) {
   return `<select class="cat-select">${opts}</select>`;
 }
 
+// ---- week helpers (for weekly drilldown) ----
+function isoWeekStartUTC(year, week) {
+  const jan4 = new Date(Date.UTC(year, 0, 4));
+  const jan4Day = jan4.getUTCDay() || 7;
+  const week1Mon = new Date(Date.UTC(year, 0, 4 - (jan4Day - 1)));
+  const start = new Date(week1Mon.getTime() + (week - 1) * 7 * 86400000);
+  return start;
+}
+function ymdUTC(date) {
+  const y = date.getUTCFullYear();
+  const m = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(date.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+function boundsFromLabelOrPoint(label, point) {
+  if (point && point.start && point.end) {
+    return { start: String(point.start).slice(0,10), end: String(point.end).slice(0,10) };
+  }
+  const m = String(label || "").match(/^(\d{4})[-\s]?W?(\d{1,2})/i);
+  if (m) {
+    const year = parseInt(m[1], 10);
+    const week = parseInt(m[2], 10);
+    if (year >= 1970 && week >= 1 && week <= 53) {
+      const start = isoWeekStartUTC(year, week);
+      const end = new Date(start.getTime() + 6 * 86400000);
+      return { start: ymdUTC(start), end: ymdUTC(end) };
+    }
+  }
+  return null;
+}
+
 // ---- charts ----
 function renderDonut(categories) {
   if (typeof Chart === "undefined") {
@@ -147,7 +178,33 @@ function renderWeekly(points, stats) {
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
   if (weekly) weekly.destroy();
-  weekly = new Chart(ctx, { type: "bar", data: { labels: labels, datasets: [{ data: data }]}, options: { plugins: { legend: { display: false } } } });
+  weekly = new Chart(ctx, {
+    type: "bar",
+    data: { labels: labels, datasets: [{ data: data }]},
+    options: {
+      plugins: { legend: { display: false } },
+      onClick: async (_e, elements) => {
+        if (!elements || !elements.length) return;
+        const i = elements[0].index;
+        const picked = points[i] || {};
+        const lbl = labels[i];
+
+        const bounds = boundsFromLabelOrPoint(lbl, picked);
+        if (!bounds) {
+          setWarning("Sorry, couldn't determine that week's date range.");
+          return;
+        }
+
+        const startEl = $("#startDate"); if (startEl) startEl.value = bounds.start;
+        const endEl = $("#endDate"); if (endEl) endEl.value = bounds.end;
+        const catSel = $("#categoryFilter"); if (catSel) catSel.value = "";
+
+        await refreshAll();
+        setWarning(`Showing transactions for ${bounds.start} → ${bounds.end}`);
+        setTimeout(() => setWarning(""), 3000);
+      }
+    }
+  });
   const statsEl = $("#weeklyStats");
   if (statsEl) {
     statsEl.innerHTML = `Avg: <strong>${fmtMoney(stats.avg)}</strong> &nbsp; Min: <strong>${fmtMoney(stats.min)}</strong> &nbsp; Max: <strong>${fmtMoney(stats.max)}</strong> &nbsp; Mode(~$1k): <strong>${fmtMoney(stats.mode_nearest_thousand)}</strong>`;
@@ -266,7 +323,6 @@ async function refreshChartsOnly() {
     const data = await fetchSummary();
     setWarning(""); setDebug("");
 
-    // Prefer backend-provided categories, else use ALL_CATEGORIES
     const filterCats = (data.filters && Array.isArray(data.filters.categories) && data.filters.categories.length)
       ? data.filters.categories
       : ALL_CATEGORIES;
@@ -308,6 +364,40 @@ async function refreshAll() {
   }
 }
 
+// ---- UI: All Dates button (no HTML changes needed) ----
+function ensureAllDatesButton() {
+  if (document.getElementById("allDatesBtn")) return;
+
+  // Try to place next to End date input inside the same .filters row
+  const filtersRow = document.querySelector(".filters") || document.getElementById("endDate")?.parentElement?.parentElement;
+  const btn = document.createElement("button");
+  btn.id = "allDatesBtn";
+  btn.type = "button";
+  btn.className = "btn";
+  btn.textContent = "All Dates";
+
+  // Default placement: after the End date label
+  const endLabel = document.getElementById("endDate")?.parentElement;
+  if (endLabel && endLabel.parentElement) {
+    endLabel.parentElement.insertBefore(btn, endLabel.nextSibling);
+  } else if (filtersRow) {
+    filtersRow.appendChild(btn);
+  } else {
+    // Last resort: append near upload form
+    (document.getElementById("uploadForm") || document.body).appendChild(btn);
+  }
+
+  on(btn, "click", async () => {
+    const s = document.getElementById("startDate");
+    const e = document.getElementById("endDate");
+    if (s) s.value = "";
+    if (e) e.value = "";
+    await refreshAll();
+    setWarning("Showing all dates");
+    setTimeout(() => setWarning(""), 2000);
+  });
+}
+
 // ---- events ----
 function wireEvents() {
   on($("#uploadForm"), "submit", async function(e) {
@@ -343,8 +433,6 @@ function wireEvents() {
     if (!p) return;
     p.style.display = (p.style.display === "none") ? "block" : "none";
   });
-
-  // Removed: #seedData handler and any /dev/seed calls
 
   on($("#hideAllTransfers"), "click", async function() {
     try {
@@ -395,7 +483,8 @@ window.addEventListener("error", function(e) {
 // ---- boot ----
 (async function start() {
   wireEvents();
+  ensureAllDatesButton();   // ← add the button at runtime
   await checkHealth();
-  await fetchCategories();   // fills ALL_CATEGORIES using /api/categories -> /api/rules -> defaults
+  await fetchCategories();
   await refreshAll();
 })();
