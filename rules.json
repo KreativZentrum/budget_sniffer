@@ -468,6 +468,285 @@
         ]
       },
       "category": "Groceries"
+    },
+    {
+      "name": "User: webbs -> Entertainment",
+      "match": {
+        "contains_any": [
+          "webbs"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: gazley -> Transport",
+      "match": {
+        "contains_any": [
+          "gazley"
+        ]
+      },
+      "category": "Transport"
+    },
+    {
+      "name": "User: police -> Transport",
+      "match": {
+        "contains_any": [
+          "police"
+        ]
+      },
+      "category": "Transport"
+    },
+    {
+      "name": "User: protecta -> Transport",
+      "match": {
+        "contains_any": [
+          "protecta"
+        ]
+      },
+      "category": "Transport"
+    },
+    {
+      "name": "User: lotto -> Entertainment",
+      "match": {
+        "contains_any": [
+          "lotto"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: wellington -> Healthcare",
+      "match": {
+        "contains_any": [
+          "wellington"
+        ]
+      },
+      "category": "Healthcare"
+    },
+    {
+      "name": "User: mckeown -> Entertainment",
+      "match": {
+        "contains_any": [
+          "mckeown"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: urban -> Housing",
+      "match": {
+        "contains_any": [
+          "urban"
+        ]
+      },
+      "category": "Housing"
+    },
+    {
+      "name": "User: emma -> Entertainment",
+      "match": {
+        "contains_any": [
+          "emma"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: habit -> Healthcare",
+      "match": {
+        "contains_any": [
+          "habit"
+        ]
+      },
+      "category": "Healthcare"
+    },
+    {
+      "name": "User: joint -> Housing",
+      "match": {
+        "contains_any": [
+          "joint"
+        ]
+      },
+      "category": "Housing"
+    },
+    {
+      "name": "User: joint -> Groceries",
+      "match": {
+        "contains_any": [
+          "joint"
+        ]
+      },
+      "category": "Groceries"
+    },
+    {
+      "name": "User: pennys -> Dining",
+      "match": {
+        "contains_any": [
+          "pennys"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: air -> Travel",
+      "match": {
+        "contains_any": [
+          "air"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: tab -> Entertainment",
+      "match": {
+        "contains_any": [
+          "tab"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: acu -> Dining",
+      "match": {
+        "contains_any": [
+          "acu"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: rejuvenate -> Healthcare",
+      "match": {
+        "contains_any": [
+          "rejuvenate"
+        ]
+      },
+      "category": "Healthcare"
+    },
+    {
+      "name": "User: maidstone -> Housing",
+      "match": {
+        "contains_any": [
+          "maidstone"
+        ]
+      },
+      "category": "Housing"
+    },
+    {
+      "name": "User: webb -> Housing",
+      "match": {
+        "contains_any": [
+          "webb"
+        ]
+      },
+      "category": "Housing"
+    },
+    {
+      "name": "User: oz's -> Dining",
+      "match": {
+        "contains_any": [
+          "oz's"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: bowen -> Healthcare",
+      "match": {
+        "contains_any": [
+          "bowen"
+        ]
+      },
+      "category": "Healthcare"
+    },
+    {
+      "name": "User: wise -> Travel",
+      "match": {
+        "contains_any": [
+          "wise"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: berg -> Travel",
+      "match": {
+        "contains_any": [
+          "berg"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: 1.0000 -> Travel",
+      "match": {
+        "contains_any": [
+          "1.0000"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: 9706.38 -> Travel",
+      "match": {
+        "contains_any": [
+          "9706.38"
+        ]
+      },
+      "category": "Travel"
+    },
+    {
+      "name": "User: wbc -> Dining",
+      "match": {
+        "contains_any": [
+          "wbc"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: microaccountingta -> Fees",
+      "match": {
+        "contains_any": [
+          "microaccountingta"
+        ]
+      },
+      "category": "Fees"
+    },
+    {
+      "name": "User: anz -> Dining",
+      "match": {
+        "contains_any": [
+          "anz"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: anz -> Entertainment",
+      "match": {
+        "contains_any": [
+          "anz"
+        ]
+      },
+      "category": "Entertainment"
+    },
+    {
+      "name": "User: hong -> Dining",
+      "match": {
+        "contains_any": [
+          "hong"
+        ]
+      },
+      "category": "Dining"
+    },
+    {
+      "name": "User: sharesies -> Income",
+      "match": {
+        "contains_any": [
+          "sharesies"
+        ]
+      },
+      "category": "Income"
     }
   ]
 }
