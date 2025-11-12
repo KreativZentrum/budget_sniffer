@@ -49,33 +49,68 @@ def get_db():
     return conn
 
 def init_db():
+    # Determine whether a DB file already exists
+    db_exists = os.path.exists(DB_PATH)
+
+    # Support developer opt-in to force recreate DB for testing/dev only.
+    # Use environment variable RECREATE_DB=true to backup and recreate the DB file.
+    recreate_flag = str(os.environ.get("RECREATE_DB", "")).lower() in ("1", "true", "yes", "y")
+    if recreate_flag and db_exists:
+        try:
+            # Move existing DB to a timestamped backup to avoid silent data loss
+            ts = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+            backup_path = f"{DB_PATH}.bak.{ts}"
+            os.replace(DB_PATH, backup_path)
+            logger.info("RECREATE_DB set: backed up existing DB to %s", backup_path)
+            db_exists = False
+        except Exception as e:
+            logger.exception("Failed to backup existing DB before recreate: %s", e)
+            raise
+
+    # Open (or create) connection; creating the file is harmless but we log intent
     with get_db() as con:
-        # Check if transactions table exists
         cur = con.cursor()
-        cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='transactions'")
-        table_exists = cur.fetchone() is not None
-        
-        if not table_exists:
-            # Create table from schema if it doesn't exist
+
+        # If the DB file did not exist, create schema from file
+        if not db_exists:
             schema_path = os.path.join(BASE_DIR, "schema.sql")
-            with open(schema_path, "r") as f:
-                con.executescript(f.read())
-            logger.info("Created transactions table from schema")
+            try:
+                with open(schema_path, "r") as f:
+                    con.executescript(f.read())
+                logger.info("Database file not found; created new DB and initialized schema at %s", DB_PATH)
+            except Exception as e:
+                logger.exception("Failed to create new DB schema: %s", e)
+                raise
         else:
-            # Table exists, check if hidden column exists
-            cur.execute("PRAGMA table_info(transactions)")
-            columns = [row[1] for row in cur.fetchall()]
-            if 'hidden' not in columns:
+            # DB exists; verify transactions table and run idempotent migrations if needed
+            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='transactions'")
+            table_exists = cur.fetchone() is not None
+
+            if not table_exists:
+                # If file exists but table missing, create schema
+                schema_path = os.path.join(BASE_DIR, "schema.sql")
                 try:
-                    cur.execute("ALTER TABLE transactions ADD COLUMN hidden INTEGER DEFAULT 0")
-                    con.commit()
-                    logger.info("Added hidden column to transactions table")
-                except sqlite3.OperationalError as e:
-                    logger.warning("Could not add hidden column: %s", e)
+                    with open(schema_path, "r") as f:
+                        con.executescript(f.read())
+                    logger.info("Existing DB found but transactions table missing; initialized schema")
+                except Exception as e:
+                    logger.exception("Failed to initialize schema on existing DB: %s", e)
+                    raise
             else:
-                logger.info("Hidden column already exists")
-            
-    logger.info("DB initialised / verified.")
+                # Table exists, check if hidden column exists and apply lightweight migration
+                cur.execute("PRAGMA table_info(transactions)")
+                columns = [row[1] for row in cur.fetchall()]
+                if 'hidden' not in columns:
+                    try:
+                        cur.execute("ALTER TABLE transactions ADD COLUMN hidden INTEGER DEFAULT 0")
+                        con.commit()
+                        logger.info("Added hidden column to transactions table")
+                    except sqlite3.OperationalError as e:
+                        logger.warning("Could not add hidden column: %s", e)
+                else:
+                    logger.info("Hidden column already exists")
+
+    logger.info("DB initialised / verified. (db_exists=%s)", db_exists)
 
 @app.before_request
 def _ensure_db_once():
