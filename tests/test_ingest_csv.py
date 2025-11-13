@@ -29,14 +29,17 @@ def test_csv_adapter_parses_rows_and_generates_fingerprint(tmp_path, monkeypatch
     data = src.read_bytes()
     assert data, 'fixture file appears empty'
 
-    # The adapter API (not implemented yet) will expose a function called `parse_csv`.
-    # For TDD we assert expected behaviour; this test should fail until adapter/normalizer exist.
+    # The adapter API provides `parse_csv(path)` returning list of raw dicts
     from budget_sniffer.ingest.adapters import csv as csv_adapter  # noqa: F401
+    from budget_sniffer.ingest import normalizer
 
-    # Expect the adapter to provide `parse_csv(path)` returning list of raw dicts
-    with pytest.raises(Exception):
-        # currently this should raise ImportError or AttributeError until implemented
-        rows = csv_adapter.parse_csv(str(src))
+    rows = csv_adapter.parse_csv(str(src))
+    assert isinstance(rows, list) and len(rows) > 0, 'expected adapter to return at least one row'
+
+    # Normalize the first row and assert the fingerprint is a 64-char hex string
+    canon = normalizer.normalize(rows[0])
+    fp = canon.get('fingerprint')
+    assert isinstance(fp, str) and len(fp) == 64 and all(c in '0123456789abcdef' for c in fp), 'invalid fingerprint'
 
 
 def test_fingerprint_stability():
